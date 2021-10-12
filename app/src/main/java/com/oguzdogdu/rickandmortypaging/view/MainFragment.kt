@@ -1,27 +1,70 @@
 package com.oguzdogdu.rickandmortypaging.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.oguzdogdu.rickandmortypaging.R
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.oguzdogdu.rickandmortypaging.adapter.RickMortyAdapter
+import com.oguzdogdu.rickandmortypaging.databinding.FragmentMainBinding
+import com.oguzdogdu.rickandmortypaging.viewmodel.RickMortyViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class MainFragment : Fragment() {
+    private var _binding: FragmentMainBinding? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val binding get() = _binding!!
 
-    }
+    private lateinit var mAdapter: RickMortyAdapter
+
+    private val viewModel: RickMortyViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
+    ): View {
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRV()
+        loadData()
+
+    }
+
+    private fun loadData() {
+        lifecycleScope.launch {
+            viewModel.listData.collect { rick ->
+                mAdapter.submitData(rick)
+
+            }
+        }
+
+    }
+
+    private fun setupRV() {
+        mAdapter = RickMortyAdapter()
+
+        binding.recyclerView.apply {
+            adapter = mAdapter
+            layoutManager = StaggeredGridLayoutManager(
+                2, StaggeredGridLayoutManager.VERTICAL
+            )
+            setHasFixedSize(true)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }

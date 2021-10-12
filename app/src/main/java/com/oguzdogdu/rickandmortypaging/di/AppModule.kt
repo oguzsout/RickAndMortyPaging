@@ -20,7 +20,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun retrofitInstance() : ApiService = Retrofit.Builder()
+    fun retrofitInstance(): ApiService = Retrofit.Builder()
         .baseUrl(provideBaseUrl())
         .addConverterFactory(GsonConverterFactory.create())
         .build()

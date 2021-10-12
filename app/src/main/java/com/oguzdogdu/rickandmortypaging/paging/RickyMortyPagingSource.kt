@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.oguzdogdu.rickandmortypaging.model.RickMortyModel
 import com.oguzdogdu.rickandmortypaging.service.ApiService
 
-class RickyMortyPagingSource  (
+class RickyMortyPagingSource(
     private val apiService: ApiService
 ) : PagingSource<Int, RickMortyModel>() {
 
@@ -20,7 +20,7 @@ class RickyMortyPagingSource  (
             val currentPage = params.key ?: 1
             val response = apiService.getAllCharacters(currentPage)
             val responseData = mutableListOf<RickMortyModel>()
-            val data = response.body()?.results?: emptyList()
+            val data = response.body()?.results ?: emptyList()
             responseData.addAll(data)
 
             LoadResult.Page(

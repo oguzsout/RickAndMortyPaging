@@ -2,16 +2,17 @@ package com.oguzdogdu.rickandmortypaging.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.oguzdogdu.rickandmortypaging.databinding.CharacterLayoutBinding
 import com.oguzdogdu.rickandmortypaging.model.RickMortyModel
+import com.oguzdogdu.rickandmortypaging.view.MainFragmentDirections
 
 class RickMortyAdapter : PagingDataAdapter<RickMortyModel,
         RickMortyAdapter.ImageViewHolder>(diffCallback) {
-
 
     inner class ImageViewHolder(
         val binding: CharacterLayoutBinding
@@ -20,11 +21,17 @@ class RickMortyAdapter : PagingDataAdapter<RickMortyModel,
 
     companion object {
         val diffCallback = object : DiffUtil.ItemCallback<RickMortyModel>() {
-            override fun areItemsTheSame(oldItem: RickMortyModel, newItem: RickMortyModel): Boolean {
+            override fun areItemsTheSame(
+                oldItem: RickMortyModel,
+                newItem: RickMortyModel
+            ): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: RickMortyModel, newItem: RickMortyModel): Boolean {
+            override fun areContentsTheSame(
+                oldItem: RickMortyModel,
+                newItem: RickMortyModel
+            ): Boolean {
                 return oldItem == newItem
             }
         }
@@ -56,7 +63,11 @@ class RickMortyAdapter : PagingDataAdapter<RickMortyModel,
             }
         }
 
-    }
+        holder.binding.root.setOnClickListener {
+            val action = MainFragmentDirections.actionMainFragmentToDetailFragment(currChar!!)
+            Navigation.findNavController(it).navigate(action)
+        }
 
+    }
 
 }
