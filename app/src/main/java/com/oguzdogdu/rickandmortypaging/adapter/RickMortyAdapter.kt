@@ -56,11 +56,6 @@ class RickMortyAdapter :
                     crossfade(1000)
                 }
             }
-
-
-
-
-
             holder.binding.root.setOnClickListener {
                 val action = MainFragmentDirections.actionMainFragmentToDetailFragment(currChar!!)
                 Navigation.findNavController(it).navigate(action)

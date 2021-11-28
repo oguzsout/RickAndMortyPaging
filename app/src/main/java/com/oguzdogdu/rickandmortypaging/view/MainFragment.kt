@@ -39,15 +39,12 @@ class MainFragment : Fragment() {
         loadData()
 
     }
-
     private fun loadData() {
         lifecycleScope.launch {
             viewModel.listData.collect { rick ->
                 mAdapter.submitData(rick)
-
             }
         }
-
     }
 
     private fun setupRV() {
@@ -61,10 +58,8 @@ class MainFragment : Fragment() {
             setHasFixedSize(true)
         }
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }
