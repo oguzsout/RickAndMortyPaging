@@ -30,6 +30,10 @@ class DetailFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        detailComponent()
+    }
+
+    private fun detailComponent() {
         val character = args.uuid
 
         binding.txtIdCharacter.text = character.id.toString()
@@ -42,7 +46,6 @@ class DetailFragment : Fragment() {
             crossfade(1000)
             transformations(RoundedCornersTransformation(10f))
         }
-
     }
 
     override fun onDestroyView() {

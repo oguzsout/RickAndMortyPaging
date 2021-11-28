@@ -4,16 +4,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.oguzdogdu.rickandmortypaging.model.RickMortyModel
 import com.oguzdogdu.rickandmortypaging.paging.RickyMortyPagingSource
+import com.oguzdogdu.rickandmortypaging.repo.RickRepository
 import com.oguzdogdu.rickandmortypaging.service.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
-class RickMortyViewModel @Inject constructor(private val apiService: ApiService) : ViewModel() {
+class RickMortyViewModel @Inject constructor(private val repository: RickRepository) : ViewModel() {
 
+    fun getFileStream(): Flow<PagingData<RickMortyModel>> {
+        return repository.getList().cachedIn(viewModelScope)
+    }
+    /*
     val listData = Pager(PagingConfig(pageSize = 20)) {
         RickyMortyPagingSource(apiService)
     }.flow.cachedIn(viewModelScope)
+
+     */
 }
