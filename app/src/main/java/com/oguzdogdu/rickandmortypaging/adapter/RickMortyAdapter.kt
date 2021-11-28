@@ -11,12 +11,10 @@ import com.oguzdogdu.rickandmortypaging.databinding.CharacterLayoutBinding
 import com.oguzdogdu.rickandmortypaging.model.RickMortyModel
 import com.oguzdogdu.rickandmortypaging.view.MainFragmentDirections
 
-class RickMortyAdapter : PagingDataAdapter<RickMortyModel,
-        RickMortyAdapter.ImageViewHolder>(diffCallback) {
+class RickMortyAdapter :
+    PagingDataAdapter<RickMortyModel, RickMortyAdapter.ImageViewHolder>(diffCallback) {
 
-    inner class ImageViewHolder(
-        val binding: CharacterLayoutBinding
-    ) :
+    inner class ImageViewHolder(val binding: CharacterLayoutBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     companion object {
@@ -37,12 +35,10 @@ class RickMortyAdapter : PagingDataAdapter<RickMortyModel,
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         return ImageViewHolder(
             CharacterLayoutBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent, false
+                LayoutInflater.from(parent.context), parent, false
             )
         )
     }
@@ -54,20 +50,21 @@ class RickMortyAdapter : PagingDataAdapter<RickMortyModel,
 
             holder.itemView.apply {
                 tvDescription.text = "${currChar?.name}"
-
                 val imageLink = currChar?.image
                 imageView.load(imageLink) {
                     crossfade(true)
                     crossfade(1000)
                 }
             }
-        }
 
-        holder.binding.root.setOnClickListener {
-            val action = MainFragmentDirections.actionMainFragmentToDetailFragment(currChar!!)
-            Navigation.findNavController(it).navigate(action)
-        }
 
+
+
+
+            holder.binding.root.setOnClickListener {
+                val action = MainFragmentDirections.actionMainFragmentToDetailFragment(currChar!!)
+                Navigation.findNavController(it).navigate(action)
+            }
+        }
     }
-
 }

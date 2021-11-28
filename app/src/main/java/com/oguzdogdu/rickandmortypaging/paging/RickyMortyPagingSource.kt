@@ -31,6 +31,5 @@ class RickyMortyPagingSource(
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
-
     }
 }

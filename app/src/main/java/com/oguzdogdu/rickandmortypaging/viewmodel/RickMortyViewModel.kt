@@ -13,8 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RickMortyViewModel @Inject constructor(private val apiService: ApiService) : ViewModel() {
 
-    val listData = Pager(PagingConfig(pageSize = 1)) {
+    val listData = Pager(PagingConfig(pageSize = 20)) {
         RickyMortyPagingSource(apiService)
     }.flow.cachedIn(viewModelScope)
-
 }
