@@ -2,20 +2,30 @@ package com.oguzdogdu.rickandmortypaging.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.Navigation
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.oguzdogdu.rickandmortypaging.databinding.CharacterLayoutBinding
 import com.oguzdogdu.rickandmortypaging.model.RickMortyModel
-import com.oguzdogdu.rickandmortypaging.view.MainFragmentDirections
+import javax.inject.Inject
 
-class RickMortyAdapter :
+class RickMortyAdapter @Inject constructor() :
     PagingDataAdapter<RickMortyModel, RickMortyAdapter.ImageViewHolder>(diffCallback) {
 
-    inner class ImageViewHolder(val binding: CharacterLayoutBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class ImageViewHolder(private val binding: CharacterLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(rickMortyModel: RickMortyModel) {
+            binding.apply {
+                tvDescription.text = rickMortyModel.name
+                val imageLink = rickMortyModel.image
+                imageView.load(imageLink) {
+                    crossfade(true)
+                    crossfade(1000)
+                }
+            }
+        }
+    }
 
     companion object {
         val diffCallback = object : DiffUtil.ItemCallback<RickMortyModel>() {
@@ -46,20 +56,25 @@ class RickMortyAdapter :
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val currChar = getItem(position)
 
-        holder.binding.apply {
-
-            holder.itemView.apply {
-                tvDescription.text = "${currChar?.name}"
-                val imageLink = currChar?.image
-                imageView.load(imageLink) {
-                    crossfade(true)
-                    crossfade(1000)
-                }
-            }
-            holder.binding.root.setOnClickListener {
-                val action = MainFragmentDirections.actionMainFragmentToDetailFragment(currChar!!)
-                Navigation.findNavController(it).navigate(action)
-            }
+        if (currChar != null) {
+            holder.bind(currChar)
         }
     }
 }
+
+
+
+
+
+
+
+       /* holder.binding.root.setOnClickListener {
+            val action = MainFragmentDirections.actionMainFragmentToDetailFragment(currChar!!)
+            Navigation.findNavController(it).navigate(action)
+        }
+    }
+
+        */
+
+
+
