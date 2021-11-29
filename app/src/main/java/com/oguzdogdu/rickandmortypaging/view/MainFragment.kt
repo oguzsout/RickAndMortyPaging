@@ -12,7 +12,6 @@ import com.oguzdogdu.rickandmortypaging.adapter.RickMortyAdapter
 import com.oguzdogdu.rickandmortypaging.databinding.FragmentMainBinding
 import com.oguzdogdu.rickandmortypaging.viewmodel.RickMortyViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -40,19 +39,6 @@ class MainFragment : Fragment() {
         loadData()
 
     }
-    private fun loadData() {
-        lifecycleScope.launch {
-            viewModel.getFileStream().collectLatest { rick ->
-                mAdapter.submitData(rick)
-            }
-            /*
-            viewModel.listData.collect { rick ->
-                mAdapter.submitData(rick)
-            }
-
-             */
-        }
-    }
 
     private fun setupRV() {
         mAdapter = RickMortyAdapter()
@@ -65,6 +51,21 @@ class MainFragment : Fragment() {
             setHasFixedSize(true)
         }
     }
+
+    private fun loadData() {
+        lifecycleScope.launch {
+            viewModel.getFileStream().collectLatest { rick ->
+                mAdapter.submitData(rick)
+            }
+        }
+        /*
+               viewModel.listData.collect { rick ->
+                   mAdapter.submitData(rick)
+               }
+
+                */
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
