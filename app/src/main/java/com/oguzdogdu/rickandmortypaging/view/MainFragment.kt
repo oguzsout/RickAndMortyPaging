@@ -1,13 +1,12 @@
 package com.oguzdogdu.rickandmortypaging.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.oguzdogdu.rickandmortypaging.R
 import com.oguzdogdu.rickandmortypaging.adapter.RickMortyAdapter
 import com.oguzdogdu.rickandmortypaging.databinding.FragmentMainBinding
 import com.oguzdogdu.rickandmortypaging.viewmodel.RickMortyViewModel
@@ -16,7 +15,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
+class MainFragment : Fragment(R.layout.fragment_main) {
     private var _binding: FragmentMainBinding? = null
 
     private val binding get() = _binding!!
@@ -25,21 +24,11 @@ class MainFragment : Fragment() {
 
     private val viewModel: RickMortyViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRV()
         loadData()
-
     }
-
     private fun setupRV() {
         mAdapter = RickMortyAdapter()
 
@@ -51,21 +40,16 @@ class MainFragment : Fragment() {
             setHasFixedSize(true)
         }
     }
-
     private fun loadData() {
         lifecycleScope.launch {
             viewModel.getFileStream().collectLatest { rick ->
                 mAdapter.submitData(rick)
             }
         }
-        /*
-               viewModel.listData.collect { rick ->
-                   mAdapter.submitData(rick)
-               }
-
+        /* viewModel.listData.collect { rick ->
+                   mAdapter.submitData(rick)}
                 */
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
