@@ -10,9 +10,9 @@ import com.oguzdogdu.rickandmortypaging.utils.Constants.PAGE_ITEM_LIMIT
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class RickRepository @Inject constructor(private val apiService: ApiService) {
+class RickRepository @Inject constructor(private val apiService: ApiService) : RickRepoInterface {
 
-    fun getList(): Flow<PagingData<RickMortyModel>> {
+    override fun getList(): Flow<PagingData<RickMortyModel>> {
         return Pager(
             config = PagingConfig(pageSize = PAGE_ITEM_LIMIT, enablePlaceholders = false),
             pagingSourceFactory = { RickyMortyPagingSource(apiService) }

@@ -2,18 +2,20 @@ package com.oguzdogdu.rickandmortypaging.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.oguzdogdu.rickandmortypaging.databinding.CharacterLayoutBinding
 import com.oguzdogdu.rickandmortypaging.model.RickMortyModel
+import com.oguzdogdu.rickandmortypaging.view.MainFragmentDirections
 import javax.inject.Inject
 
 class RickMortyAdapter @Inject constructor() :
     PagingDataAdapter<RickMortyModel, RickMortyAdapter.ImageViewHolder>(diffCallback) {
 
-    inner class ImageViewHolder(private val binding: CharacterLayoutBinding) :
+    inner class ImageViewHolder(val binding: CharacterLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(rickMortyModel: RickMortyModel) {
             binding.apply {
@@ -59,6 +61,10 @@ class RickMortyAdapter @Inject constructor() :
         if (currChar != null) {
             holder.bind(currChar)
         }
+        holder.binding.root.setOnClickListener {
+            val action = MainFragmentDirections.actionMainFragmentToDetailFragment(currChar!!)
+            Navigation.findNavController(it).navigate(action)
+        }
     }
 }
 
@@ -68,13 +74,11 @@ class RickMortyAdapter @Inject constructor() :
 
 
 
-       /* holder.binding.root.setOnClickListener {
-            val action = MainFragmentDirections.actionMainFragmentToDetailFragment(currChar!!)
-            Navigation.findNavController(it).navigate(action)
-        }
-    }
 
-        */
+
+
+
+
 
 
 
