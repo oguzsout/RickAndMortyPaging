@@ -1,5 +1,7 @@
 package com.oguzdogdu.rickandmortypaging.di
 
+import com.oguzdogdu.rickandmortypaging.repo.RickRepoInterface
+import com.oguzdogdu.rickandmortypaging.repo.RickRepository
 import com.oguzdogdu.rickandmortypaging.service.ApiService
 import com.oguzdogdu.rickandmortypaging.utils.Constants
 import dagger.Module
@@ -25,4 +27,10 @@ object AppModule {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(ApiService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideRepository(apiService: ApiService): RickRepoInterface {
+        return RickRepository(apiService)
+    }
 }
